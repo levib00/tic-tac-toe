@@ -1,0 +1,35 @@
+const game = (() => {
+    const playButton = document.querySelectorAll(".play-button")
+
+    const gameBoard = {
+        myArray : ["","","","","","","","",""],
+    };
+
+    function test() {
+        gameBoard.myArray[Array.prototype.indexOf.call(playButton, this)] = "x";
+        render()
+        console.log(gameBoard.myArray)
+    }
+
+    const render = (function() {
+        i = 0
+        playButton.forEach((playButtons) => {
+            playButtons.addEventListener('click', test)
+            playButtons.innerHTML = gameBoard.myArray[i];
+            i++
+        } 
+        )
+    });
+    render()
+
+   /* function createPlayer() {
+        return {
+            
+        }
+    }
+
+    const players = {
+
+    }*/
+    
+})();

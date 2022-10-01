@@ -1,0 +1,54 @@
+:root {
+    --second-color: #7c1a7c;
+    --dark-grey: #1f1f1f;
+}
+/* Macro Styling */
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--dark-grey);
+}
+.flex-container {
+    display: flex;
+}
+.grid-container {
+    display: grid;
+}
+/* Header Styling */
+header {
+    gap: 4px;
+    font-size: 1.7rem;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--second-color);
+    color: white;
+    height: 100px;
+}
+.small-header {
+    font-size: 18px;
+}
+/* Game board styling */
+.center-board {
+    justify-content: center;
+    align-items: center;
+    height:calc(100vh - 100px);
+}
+.board {
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 200px);
+    outline:4px var(--dark-grey) solid;
+    outline-offset: -4px;
+    
+}
+.play-button {
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    border: 3px solid white;
+    background-color: var(--dark-grey);
+}
+button:hover {
+    cursor: pointer;
+}

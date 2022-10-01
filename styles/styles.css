@@ -12,6 +12,9 @@ html, body {
 }
 .flex-container {
     display: flex;
+    justify-content: center;
+    justify-content: center;
+    align-items: center;
 }
 .grid-container {
     display: grid;
@@ -20,8 +23,6 @@ html, body {
 header {
     gap: 4px;
     font-size: 1.7rem;
-    justify-content: center;
-    align-items: center;
     background-color: var(--second-color);
     color: white;
     height: 100px;
@@ -31,8 +32,7 @@ header {
 }
 /* Game board styling */
 .center-board {
-    justify-content: center;
-    align-items: center;
+    
     height:calc(100vh - 100px);
 }
 .board {
@@ -40,7 +40,6 @@ header {
     grid-template-rows: repeat(3, 200px);
     outline:4px var(--dark-grey) solid;
     outline-offset: -4px;
-    
 }
 .play-button {
     height: 100%;
@@ -48,6 +47,9 @@ header {
     border-radius: 0;
     border: 3px solid white;
     background-color: var(--dark-grey);
+    color: white;
+    font-size: 15.5rem;
+    padding-bottom: 60px; /*TEMPORARY*/
 }
 button:hover {
     cursor: pointer;

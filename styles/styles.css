@@ -20,7 +20,8 @@ html, body {
     display: grid;
 }
 /* Header Styling */
-header {
+header,
+.players {
     gap: 4px;
     font-size: 1.7rem;
     background-color: var(--second-color);

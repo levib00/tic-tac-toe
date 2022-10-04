@@ -48,8 +48,8 @@ header {
     border: 3px solid white;
     background-color: var(--dark-grey);
     color: white;
-    font-size: 15.5rem;
-    padding-bottom: 60px; /*TEMPORARY*/
+    font-size: 12rem;
+    padding-bottom: 15px;
 }
 button:hover {
     cursor: pointer;

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 :root {
     --second-color: #7c1a7c;
     --dark-grey: #1f1f1f;
@@ -9,6 +10,7 @@ html, body {
     margin: 0;
     padding: 0;
     background-color: var(--dark-grey);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .flex-container {
     display: flex;
@@ -22,19 +24,45 @@ html, body {
 /* Header Styling */
 header,
 .players {
-    gap: 4px;
-    font-size: 1.7rem;
+    gap: 6px;
+    font-size: 2rem;
     background-color: var(--second-color);
     color: white;
     height: 100px;
+    font-weight: 700;
 }
 .small-header {
     font-size: 18px;
 }
 /* Game board styling */
+#info-container {
+    margin-top: 10px;
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 200px 200px;
+    grid-template-rows: 60px 60px;
+}
+.button-container button {
+    height: 40px;
+    width: 90px;
+    background-color: var(--second-color);
+    border: none;
+    border-radius: 7px;
+    font-size: 20px;
+    color: #1f1f1f;
+    margin-top: 4px;
+}
+#start-button {
+    grid-column: 1/3;
+    margin-top: 4px;
+}
+#start-button button {
+    width: 135px;
+}
 .center-board {
-    
-    height:calc(100vh - 100px);
+    height:calc(100vh - 200px);
 }
 .board {
     grid-template-columns: repeat(3, 200px);

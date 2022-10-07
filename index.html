@@ -10,21 +10,27 @@
 </head>
 <body>
     <header class="flex-container">Tic <div class="small-header">x</div> Tac <div class="small-header">o</div> Toe</header>
-    <div class="flex-container players">
-        <div> <!--TEMP-->
+    <div class="flex-container" id="info-container">
+        <div>
             Player 1:
-            <div>
+            <div class="score-container" id="player-one-score"></div>
+            <div class="button-container">
                 <button id="human1">Human</button>
                 <button id="cpu1">CPU</button>
             </div>
         </div>
         <div>
             Player 2:
-            <div>
+            <div class="score-container" id="player-two-score"></div>
+            <div class="button-container">
                 <button id="human2">Human</button>
                 <button id="cpu2">CPU</button>
             </div>
         </div>
+        <div class="button-container" id="start-button">
+            <button id="start-button">Start Game!</button>
+        </div>
+        <div class="score-container"></div>
     </div>
 <div class="flex-container center-board">
     <div class="grid-container board">

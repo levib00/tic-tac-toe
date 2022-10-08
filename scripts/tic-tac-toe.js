@@ -37,8 +37,17 @@ const game = (() => {
     const human2 = document.getElementById("human2");
     const cpu1 = document.getElementById("cpu1");
     const cpu2 = document.getElementById("cpu2")
+    const startButton = document.getElementById("start-button")
+    const showNextButton = document.getElementById("next-round-button")
 
+    let playerOneScore = 0;
+    let playerTwoScore = 0;
+    
     const render = (function() {
+        
+        const boardDOM = document.getElementById("board").setAttribute("class","grid-container board");
+        const playerOneScoreDOM = document.getElementById("player-one-score").innerHTML = playerOneScore;
+        const playerTwoScoreDOM = document.getElementById("player-two-score").innerHTML = playerTwoScore;
         i = 0
         playButton.forEach((playButtons) => {
             playButtons.addEventListener('click', addToBoardArray)
@@ -46,7 +55,17 @@ const game = (() => {
             i++;
         })
     });
-    render()
+    
+
+    startButton.addEventListener("click",() =>{
+        if (allowStart === true) {
+            render();
+            const hideButtons = document.querySelectorAll(".button-container")
+            hideButtons.forEach((hideButton) => {
+                hideButton.setAttribute("class","button-container hide")
+            })
+        }
+    })
 
     human1.addEventListener("click",() => {
         players.human1 = true;
@@ -80,8 +99,6 @@ const game = (() => {
     }
 
     const createPlayer = () => {
-        
-        
         const getName = (() =>  {
             if ((!players.human1 && !players.ai1) || (!players.human2 && !players.ai2)) {
                 console.log({players},"condition: return")
@@ -96,14 +113,11 @@ const game = (() => {
                 console.log({players}, "condition: human vs. ai")
             } else if ((players.human1 && players.human2) || (players.ai1 && players.ai2)) {
                 console.log({players}, "condition: error")
-            }
-            console.log(allowStart)
-            
+            }            
         })()
         
     } 
     
-
     const checkWinConditions = () => {
         console.log(gameBoard.boardArray[0], gameBoard.boardArray[1])
         
@@ -115,8 +129,14 @@ const game = (() => {
           || (gameBoard.boardArray[0] === gameBoard.boardArray[3] && gameBoard.boardArray[0] === gameBoard.boardArray[6])
           || (gameBoard.boardArray[1] === gameBoard.boardArray[4] && gameBoard.boardArray[1] === gameBoard.boardArray[7])
           || (gameBoard.boardArray[2] === gameBoard.boardArray[5] && gameBoard.boardArray[2] === gameBoard.boardArray[8])) {
-            console.log(gameBoard.boardArray[0], gameBoard.boardArray[1], gameBoard.boardArray[2])
-            console.log(turns.oTurn === true ? "X Wins!" : "O Wins!")
+            if (turns.oTurn === true)  {
+                console.log("X Wins!")
+                playerOneScore++
+            } else {
+                console.log("O Wins!");
+                playerTwoScore++
+            }
+            showNextButton.removeAttribute("class");
             return roundOver = true;
           }
     }

@@ -27,13 +27,17 @@
                 <button id="cpu2">CPU</button>
             </div>
         </div>
-        <div class="button-container" id="start-button">
+        <div class="button-container" id="start-button-container">
             <button id="start-button">Start Game!</button>
+            
+            <div id="notification">Please select player types.</div>
         </div>
-        <div class="score-container"></div>
+        <div class="button-container" id="next-round-container">
+            <button class="hide" id="next-round-button">Next Round!</button>
+        </div>
     </div>
 <div class="flex-container center-board">
-    <div class="grid-container board">
+    <div class="grid-container board hide" id="board">
         <div class="board-space"><button class="flex-container board-space play-button"></button></div>
         <div class="board-space"><button class="flex-container board-space play-button"></button></div>
         <div class="board-space"><button class="flex-container board-space play-button"></button></div>

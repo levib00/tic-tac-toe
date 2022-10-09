@@ -2,7 +2,7 @@ const game = (() => {
     const playButton = document.querySelectorAll(".play-button")
 
     const gameBoard = {
-        boardArray : [0,1,2,3,4,5,6,7,8],
+        boardArray : ["","","","","","","","",""],
     };
 
     const turns = {
@@ -30,7 +30,7 @@ const game = (() => {
         } 
         checkWinConditions()
         render()
-        console.log(gameBoard.boardArray)
+        
     }
 
     const human1 = document.getElementById("human1"); //need to hide these somewhere too
@@ -38,7 +38,7 @@ const game = (() => {
     const cpu1 = document.getElementById("cpu1");
     const cpu2 = document.getElementById("cpu2")
     const startButton = document.getElementById("start-button")
-    const showNextButton = document.getElementById("next-round-button")
+    const nextButton = document.getElementById("next-round-button")
 
     let playerOneScore = 0;
     let playerTwoScore = 0;
@@ -91,6 +91,13 @@ const game = (() => {
         createPlayer()
     })
 
+    nextButton.addEventListener("click",() => {
+        gameBoard.boardArray = ["","","","","","","","",""]
+        nextButton.setAttribute("class", "hide menu-button");
+        roundOver = false;
+        render()
+    })
+
     const players = { //could probably hide objects too.
         human1: false,
         human2: false,
@@ -119,25 +126,59 @@ const game = (() => {
     } 
     
     const checkWinConditions = () => {
-        console.log(gameBoard.boardArray[0], gameBoard.boardArray[1])
+        console.log(gameBoard.boardArray[0], gameBoard.boardArray[1], gameBoard.boardArray[2], gameBoard.boardArray[3], gameBoard.boardArray[4], gameBoard.boardArray[5], gameBoard.boardArray[6], gameBoard.boardArray[7], gameBoard.boardArray[8])
         
-        if ((gameBoard.boardArray[0] === gameBoard.boardArray[4] && gameBoard.boardArray[0] === gameBoard.boardArray[8])
-          || (gameBoard.boardArray[2] === gameBoard.boardArray[4] && gameBoard.boardArray[2] === gameBoard.boardArray[6])
-          || (gameBoard.boardArray[0] === gameBoard.boardArray[1] && gameBoard.boardArray[0] === gameBoard.boardArray[2])
-          || (gameBoard.boardArray[3] === gameBoard.boardArray[4] && gameBoard.boardArray[3] === gameBoard.boardArray[5])
-          || (gameBoard.boardArray[6] === gameBoard.boardArray[7] && gameBoard.boardArray[6] === gameBoard.boardArray[8])
-          || (gameBoard.boardArray[0] === gameBoard.boardArray[3] && gameBoard.boardArray[0] === gameBoard.boardArray[6])
-          || (gameBoard.boardArray[1] === gameBoard.boardArray[4] && gameBoard.boardArray[1] === gameBoard.boardArray[7])
-          || (gameBoard.boardArray[2] === gameBoard.boardArray[5] && gameBoard.boardArray[2] === gameBoard.boardArray[8])) {
+        const endGame = () => {
+            playerOneScore = 0;
+            playerTwoScore = 0;
+
+            nextButton.innerHTML = "play again!"
+        }
+        
+        const endRound = () => {
+            nextButton.setAttribute("class", "menu-button");
+            nextButton.innerHTML = "Next Round!"
+            
+            if (playerOneScore === 3) {
+                console.log("player one wins!")
+                endGame()
+            } else if (playerTwoScore === 3) {
+                console.log("player two wins!")
+                endGame()
+            }
+        }
+        
+        if ((gameBoard.boardArray[0] === gameBoard.boardArray[4] && gameBoard.boardArray[0] === gameBoard.boardArray[8] && gameBoard.boardArray[0])
+          || (gameBoard.boardArray[2] === gameBoard.boardArray[4] && gameBoard.boardArray[2] === gameBoard.boardArray[6] && gameBoard.boardArray[2])
+          || (gameBoard.boardArray[0] === gameBoard.boardArray[1] && gameBoard.boardArray[0] === gameBoard.boardArray[2] && gameBoard.boardArray[0])
+          || (gameBoard.boardArray[3] === gameBoard.boardArray[4] && gameBoard.boardArray[3] === gameBoard.boardArray[5] && gameBoard.boardArray[3])
+          || (gameBoard.boardArray[6] === gameBoard.boardArray[7] && gameBoard.boardArray[6] === gameBoard.boardArray[8] && gameBoard.boardArray[6])
+          || (gameBoard.boardArray[0] === gameBoard.boardArray[3] && gameBoard.boardArray[0] === gameBoard.boardArray[6] && gameBoard.boardArray[0])
+          || (gameBoard.boardArray[1] === gameBoard.boardArray[4] && gameBoard.boardArray[1] === gameBoard.boardArray[7] && gameBoard.boardArray[1])
+          || (gameBoard.boardArray[2] === gameBoard.boardArray[5] && gameBoard.boardArray[2] === gameBoard.boardArray[8] && gameBoard.boardArray[2])) 
+          {
             if (turns.oTurn === true)  {
+                console.log(gameBoard.boardArray[0].length)
                 console.log("X Wins!")
                 playerOneScore++
             } else {
                 console.log("O Wins!");
                 playerTwoScore++
             }
-            showNextButton.removeAttribute("class");
-            return roundOver = true;
-          }
+            endRound()
+        } else if (gameBoard.boardArray[0] && gameBoard.boardArray[1]
+            && gameBoard.boardArray[2] && gameBoard.boardArray[3]
+            && gameBoard.boardArray[4] && gameBoard.boardArray[5]
+            && gameBoard.boardArray[6] && gameBoard.boardArray[7]
+            && gameBoard.boardArray[8]) 
+            {
+            endRound()
+            console.log("It's a draw!")
+        }
+
+        
+
+        
     }
 })();
+ 

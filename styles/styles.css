@@ -44,7 +44,7 @@ header,
     grid-template-columns: 200px 200px;
     grid-template-rows: 60px 100px;
 }
-.button-container button {
+.menu-button {
     height: 40px;
     width: 90px;
     background-color: var(--second-color);

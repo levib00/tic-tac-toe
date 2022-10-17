@@ -1,3 +1,4 @@
+let roundOver = false;
 const game = (() => {
     
     const gameBoard = {
@@ -9,10 +10,6 @@ const game = (() => {
         oTurn : false
     }
 
-    let playerOneScore = 0;
-    let playerTwoScore = 0;
-
-    let roundOver = false;
     let allowStart = false
 
     const setScores = () => {
@@ -20,12 +17,13 @@ const game = (() => {
         const playerTwoScoreDOM = document.getElementById("player-two-score").innerHTML = playerTwoScore;
     }
 
-    const checkWinConditions = () => {
-        
-        console.log(gameBoard.boardArray[0], gameBoard.boardArray[1], gameBoard.boardArray[2], gameBoard.boardArray[3], gameBoard.boardArray[4], gameBoard.boardArray[5], gameBoard.boardArray[6], gameBoard.boardArray[7], gameBoard.boardArray[8])
-        
-        const endRound = () => {
-            const endGame = () => {
+    const checkWinConditions = (() => {
+        const endRound = (() => { 
+            roundOver = true
+            console.log("endRound", roundOver)
+
+            const endGame = () => {   
+
                 playerOneScore = 0;
                 playerTwoScore = 0;
                 turns.xTurn = true
@@ -35,7 +33,6 @@ const game = (() => {
             }
 
             setScores()
-            roundOver = true;
             gameElements.DOMElements.nextButton.setAttribute("class", "menu-button");
             gameElements.DOMElements.nextButton.innerHTML = "Next Round!"
             if (playerOneScore === 3) {
@@ -43,7 +40,8 @@ const game = (() => {
             } else if (playerTwoScore === 3) { 
                 endGame()
             }
-        }
+            
+        })
         
         if ((gameBoard.boardArray[0] === gameBoard.boardArray[4] && gameBoard.boardArray[0] === gameBoard.boardArray[8] && gameBoard.boardArray[0])
           || (gameBoard.boardArray[2] === gameBoard.boardArray[4] && gameBoard.boardArray[2] === gameBoard.boardArray[6] && gameBoard.boardArray[2])
@@ -61,18 +59,36 @@ const game = (() => {
                 gameElements.DOMElements.notifications.innerHTML = "player two wins!"
                 playerTwoScore++
             }
-            endRound()
+            console.log("checkWinCondition.roundOver",endRound());
+            return endRound()
         } else if (gameBoard.boardArray[0] && gameBoard.boardArray[1]
             && gameBoard.boardArray[2] && gameBoard.boardArray[3]
             && gameBoard.boardArray[4] && gameBoard.boardArray[5]
             && gameBoard.boardArray[6] && gameBoard.boardArray[7]
             && gameBoard.boardArray[8]) 
         {
-            endRound()
-            notifications.innerHTML = "It's a draw"
+            gameElements.DOMElements.notifications.innerHTML = "It's a draw"
+            return endRound()
         }
+    })
+    const addToBoardArray = function() {
+        console.log("roundOver",roundOver)
+        if (this.innerHTML === "X" || this.innerHTML === "O" || roundOver === true || game.allowStart === false) {
+            return
+        } else if (turns.xTurn) {
+            gameBoard.boardArray[Array.prototype.indexOf.call(gameElements.DOMElements.playButton, this)] = "X";
+            console.log(this);
+            turns.xTurn = false
+            turns.oTurn = true
+        } else if (turns.oTurn) {
+            gameBoard.boardArray[Array.prototype.indexOf.call(gameElements.DOMElements.playButton, this)] = "O";
+            turns.oTurn = false
+            turns.xTurn = true
+        } 
+        gameElements.render()
+        checkWinConditions() 
     }
-    return {gameBoard, checkWinConditions, roundOver, turns, setScores, allowStart}
+    return {gameBoard, checkWinConditions, turns, setScores, allowStart, addToBoardArray}
 })();
 
 const players = (() => {
@@ -103,30 +119,25 @@ const players = (() => {
     const createPlayer = () => {
         const getName = (() =>  {
             if ((!players.human1 && !players.ai1) || (!players.human2 && !players.ai2)) {
-                console.log({players},"condition: return")
+                return
             } else if ((!players.human1 && players.ai1) && (!players.human2 && players.ai2)) {
                 game.allowStart = true;
-                console.log({players}, "condition: both ai")
             } else if ((players.human1 && !players.ai1) && (players.human2 && !players.ai2)) {
                 game.allowStart = true;
-                console.log({players}, "condition: both human")
             } else if ((players.human1 ^ players.human2) && (players.ai1 ^ players.ai2)) {
                 game.allowStart = true;
-                console.log({players}, "condition: human vs. ai")
             } else if ((players.human1 && players.human2) || (players.ai1 && players.ai2)) {
-                console.log({players}, "condition: error")
+                return
             }       
         })()
-        
     } 
 
-    const players = { //could probably hide objects too.
+    const players = {
         human1: false,
         human2: false,
         ai1: false,
         ai2: false
     }
-
     return {players}
 })()
 
@@ -135,7 +146,7 @@ const gameElements = (() => {
         playButton : document.querySelectorAll(".play-button"),
         startButton : document.getElementById("start-button"),
         nextButton : document.getElementById("next-round-button"),
-        human1 : document.getElementById("human1"), //need to hide these somewhere too
+        human1 : document.getElementById("human1"),
         human2 : document.getElementById("human2"),
         cpu1 : document.getElementById("cpu1"),
         cpu2 : document.getElementById("cpu2"),
@@ -143,7 +154,7 @@ const gameElements = (() => {
     }
 
     DOMElements.startButton.addEventListener("click",() =>{
-        console.log(game.allowStart)
+        console.log("allowStart",game.allowStart)
         if (game.allowStart === true) {
             render();
             const hideButtons = document.querySelectorAll(".button-container")
@@ -156,38 +167,30 @@ const gameElements = (() => {
     DOMElements.nextButton.addEventListener("click",() => {
         game.gameBoard.boardArray = ["","","","","","","","",""]
         DOMElements.nextButton.setAttribute("class", "hide menu-button");
-        game.roundOver = false;
+        roundOver = false;
+        console.log(game.roundOver)
         DOMElements.notifications.innerHTML = ""
         render()
     })
-    
+
+    let execute = false
+
     const render = (function() {
         const boardDOM = document.getElementById("board").setAttribute("class","grid-container board");
         game.setScores()
-        
         i = 0
+
         DOMElements.playButton.forEach((playButtons) => {
-            playButtons.addEventListener('click', addToBoardArray)
+            if (!execute) {
+            playButtons.addEventListener('click', game.addToBoardArray);
+            }
+            if (i > 7) {
+                execute = true
+            }
             playButtons.innerHTML = game.gameBoard.boardArray[i];
             i++;
         })
-        function addToBoardArray() {
-            console.log(game.roundOver)
-                if (game.roundOver === true || game.allowStart === false) return
-                if (this.innerHTML === "X" || this.innerHTML === "O") {
-                    return
-                } else if (game.turns.xTurn) {
-                    game.gameBoard.boardArray[Array.prototype.indexOf.call(DOMElements.playButton, this)] = "X";
-                    game.turns.xTurn = false
-                    game.turns.oTurn = true
-                } else if (game.turns.oTurn) {
-                    game.gameBoard.boardArray[Array.prototype.indexOf.call(DOMElements.playButton, this)] = "O";
-                    game.turns.oTurn = false
-                    game.turns.xTurn = true
-                } 
-                render()
-                game.checkWinConditions() 
-            }
+        
     });
-    return {DOMElements}
-})()
+    return {DOMElements, render}
+})();

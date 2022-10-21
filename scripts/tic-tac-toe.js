@@ -1,5 +1,5 @@
 let roundOver = false; //would like to remove from global code
-const game = (() => {
+const game = (() => { //controls the logic of the game
     
     const gameBoard = {
         boardArray : ["","","","","","","","",""],
@@ -31,16 +31,16 @@ const game = (() => {
     }
 
     const checkWinConditions = (() => {
-        const endRound = (() => { 
+        const endRound = (() => { //resets board between rounds
             roundOver = true
-            const endGame = () => {   
+            const endGame = () => { //resets points and turns back to start
                 playerOneScore = 0;
                 playerTwoScore = 0;
                 gameElements.boardDOM.setAttribute("class","grid-container board hide");
                 gameElements.DOMElements.nextButton.innerHTML = "play again!"
                 if (players.players.ai1 === true || players.players.ai2 === true) {
-                    turns.xTurn = true // not working
-                    turns.oTurn = false
+                    turns.oTurn = true
+                    turns.xTurn = false
                 }
             }
             setScores()
@@ -53,6 +53,7 @@ const game = (() => {
             }
         })
         
+        //Checks all possible positions for a win from the array that holds the game pieces
         if ((gameBoard.boardArray[0] === gameBoard.boardArray[4] && gameBoard.boardArray[0] === gameBoard.boardArray[8] && gameBoard.boardArray[0])
           || (gameBoard.boardArray[2] === gameBoard.boardArray[4] && gameBoard.boardArray[2] === gameBoard.boardArray[6] && gameBoard.boardArray[2])
           || (gameBoard.boardArray[0] === gameBoard.boardArray[1] && gameBoard.boardArray[0] === gameBoard.boardArray[2] && gameBoard.boardArray[0])
@@ -70,6 +71,8 @@ const game = (() => {
                 playerTwoScore++
             }
             endRound()
+
+            //checks for a full board with no win lines meaning a draw.
         } else if (gameBoard.boardArray[0] && gameBoard.boardArray[1]
             && gameBoard.boardArray[2] && gameBoard.boardArray[3]
             && gameBoard.boardArray[4] && gameBoard.boardArray[5]
@@ -80,8 +83,9 @@ const game = (() => {
             endRound()
         }
     })
+    
+    //checks if board space is empty then adds the choice to the array, then advances the game.
     const addToBoardArray = function() {
-        
         if (this.innerHTML === "X" || this.innerHTML === "O" || roundOver === true || game.allowStart === false) return
          else if (turns.xTurn) {
             gameBoard.boardArray[Array.prototype.indexOf.call(gameElements.DOMElements.playButton, this)] = "X";
@@ -100,7 +104,8 @@ const game = (() => {
             CPUPlay()
     }
 
-    const CPUPlay = (() => { // make method for each player. call eachothers method in eachothers method if condition to automate full game.
+    //Controls ai
+    const CPUPlay = (() => {
         if (gameBoard.boardArray[0] && gameBoard.boardArray[1]
             && gameBoard.boardArray[2] && gameBoard.boardArray[3]
             && gameBoard.boardArray[4] && gameBoard.boardArray[5]
@@ -147,11 +152,10 @@ const game = (() => {
         }
         gameElements.render()
     })
-
     return {gameBoard, checkWinConditions, turns, setScores, allowStart, addToBoardArray, CPUPlay}
 })();
 
-const players = (() => {// change this name
+const players = (() => { //Holds logic of whether players are ai or human
     human1.addEventListener("click",() => {
         players.human1 = true;
         players.ai1 = false;
@@ -177,7 +181,6 @@ const players = (() => {// change this name
     })
 
     const createPlayer = () => {
-        const getName = (() =>  {
             if ((!players.human1 && !players.ai1) || (!players.human2 && !players.ai2)) {
                 return
             } else if ((!players.human1 && players.ai1) && (!players.human2 && players.ai2)) {
@@ -189,7 +192,6 @@ const players = (() => {// change this name
             } else if ((players.human1 && players.human2) || (players.ai1 && players.ai2)) {
                 return
             }       
-        })()
     } 
 
     const players = {
@@ -201,7 +203,7 @@ const players = (() => {// change this name
     return {players}
 })()
 
-const gameElements = (() => {
+const gameElements = (() => {//holds misc. DOM elements
     const DOMElements = {
         playButton : document.querySelectorAll(".play-button"),
         startButton : document.getElementById("start-button"),
@@ -220,7 +222,7 @@ const gameElements = (() => {
             hideButtons.forEach((hideButton) => {
                 hideButton.setAttribute("class","button-container hide")
             })
-            setTimeout(game.CPUPlay(),(250))
+            game.CPUPlay() //starts game if player 1 is cpu
         }
     })  
 
@@ -230,14 +232,13 @@ const gameElements = (() => {
         roundOver = false;
         console.log(game.roundOver)
         DOMElements.notifications.innerHTML = ""
-        setTimeout(game.CPUPlay(),(250))
+        game.CPUPlay() //starts game if player 1 is cpu
         render()
     })
 
-    let execute = false
+    let execute = false //to make sure that each button only gets the event listener added once, instead of getting added every time render is called.
     const boardDOM = document.getElementById("board")
     const render = (function() {
-        
         game.setScores()
         i = 0
         boardDOM.setAttribute("class","grid-container board");
